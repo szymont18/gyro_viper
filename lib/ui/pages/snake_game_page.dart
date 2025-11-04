@@ -23,11 +23,10 @@ class SnakeGamePageState extends State<SnakeGamePage> {
   LocalPlayer? localPlayer;
 
   // grid configuration
-  final int cols = 20;
-  final int rows = 30;
-  final double cellSize = 14.0;
+  final int cols = 60;
+  final int rows = 15;
+  final double cellSize = 13.0;
 
-  // redraw timer for UI: refresh at same tick as board
   Timer? _uiTimer;
 
   @override
@@ -110,42 +109,9 @@ class SnakeGamePageState extends State<SnakeGamePage> {
             const SizedBox(height: 12),
             Text(board.allPlayersDead() ? 'Game over — tap to restart' : 'Tilt phone left/right to steer'),
             const SizedBox(height: 8),
-            _buildControlsHint(),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildControlsHint() {
-    return Column(
-      children: [
-        Text(
-          'LocalPlayer settings:\n'
-              'tiltThreshold = ${LocalPlayer.tiltThreshold.toStringAsFixed(2)}, holdMs = ${LocalPlayer.tiltHoldMilliseconds}ms',
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 12, color: Colors.grey),
-        ),
-        const SizedBox(height: 6),
-        ElevatedButton(
-          onPressed: () {
-            // quick manual left/right controls for debugging on desktop/emulator
-            setState(() {
-              localPlayer?.turnLeft();
-            });
-          },
-          child: const Text('Manual Turn Left (debug)'),
-        ),
-        const SizedBox(height: 6),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              localPlayer?.turnRight();
-            });
-          },
-          child: const Text('Manual Turn Right (debug)'),
-        ),
-      ],
     );
   }
 }

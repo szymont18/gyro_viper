@@ -26,10 +26,10 @@ class LocalPlayer implements IPlayer {
   // If device x (tilt) > threshold => lean right
   // If device x (tilt) < -threshold => lean left
   // You can tune this value. Typical accelerometer tilt values range ~ -9..9
-  static const double tiltThreshold = 1.6; // how much tilt needed
+  static const double tiltThreshold = 2.0; // how much tilt needed
   // The tilt must be maintained for at least this many milliseconds
   // to trigger a turn (debounce / intentional lean).
-  static const int tiltHoldMilliseconds = 180;
+  static const int tiltHoldMilliseconds = 150;
 
   // Internal: stream subscription to accelerometer
   StreamSubscription<AccelerometerEvent>? _accelSub;
@@ -63,7 +63,7 @@ class LocalPlayer implements IPlayer {
   void _startListeningToTilt() {
     // sensors_plus provides accelerometerEvents: we use x-axis to detect lean
     _accelSub = accelerometerEvents.listen((AccelerometerEvent event) {
-      final double x = event.x;
+      final double x = event.y;
       // NOTE: device axes depend on orientation; you may need to adjust sign
       // depending on how your phone behaves. This implementation assumes:
       //  - positive x means tilt to the right (landscape assumptions may vary).
