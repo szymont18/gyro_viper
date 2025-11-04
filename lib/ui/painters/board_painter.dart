@@ -11,11 +11,11 @@ class BoardPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paintGrid = Paint()
       ..style = PaintingStyle.stroke
-      ..color = Colors.black12;
+      ..color = Colors.white;
 
     // draw background
     final bg = Paint()
-      ..color = Colors.white;
+      ..color = Colors.black38;
     canvas.drawRect(Offset.zero & size, bg);
 
     // optional: draw grid lines (light)
@@ -33,7 +33,7 @@ class BoardPainter extends CustomPainter {
       if (p.body.isEmpty) continue;
       final paint = Paint()
         ..style = PaintingStyle.fill
-        ..color = p.alive ? p.color : p.color.withOpacity(0.4);
+        ..color = p.alive ? p.color : Colors.white;
 
       for (int i = 0; i < p.body.length; i++) {
         final cell = p.body[i];

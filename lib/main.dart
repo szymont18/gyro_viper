@@ -1,5 +1,6 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:gyro_viper/ui/pages/home_page.dart';
 import 'package:gyro_viper/ui/pages/snake_game_page.dart';
 import 'package:flutter/services.dart'; // 👈 required for SystemChrome
 
@@ -20,9 +21,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SnakeGamePage(),
+    return MaterialApp(
+      title: "Gyro Vyper",
       debugShowCheckedModeBanner: false,
+      initialRoute: "/",
+      theme: ThemeData.dark(),
+
+      routes: {
+        "/": (context) => const HomePage(),
+        "/game": (context) => const SnakeGamePage()
+      },
     );
   }
 }
