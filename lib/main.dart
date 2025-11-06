@@ -1,10 +1,13 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:gyro_viper/ui/pages/home_page.dart';
-import 'package:gyro_viper/ui/pages/snake_game_page.dart';
-import 'package:flutter/services.dart'; // 👈 required for SystemChrome
+import 'package:flutter/services.dart';
+import 'package:gyro_viper/ui/pages/snake_game_page.dart'; // 👈 required for SystemChrome
+import 'dart:developer' as developer;
 
 void main() async {
+  developer.log("Application started");
+
   WidgetsFlutterBinding.ensureInitialized();
 
   // Force landscape orientation
