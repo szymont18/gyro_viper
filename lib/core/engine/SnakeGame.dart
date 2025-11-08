@@ -1,4 +1,5 @@
 import 'package:flame/game.dart';
+import 'package:gyro_viper/core/engine/predicates/PlayersAlive.dart';
 import 'package:gyro_viper/core/player/LocalPlayer.dart';
 import '../board/Board.dart';
 import '../player/components/Snake.dart';
@@ -31,6 +32,13 @@ class SnakeGame extends FlameGame with HasCollisionDetection {
     );
     add(snake);
     final localPlayer = LocalPlayer(snake: snake);
+
+    add(PlayerAlive(
+        players: [localPlayer],
+        onPlayersNotAlive: () {
+          pauseEngine();
+          overlays.add('GameOverMenu');
+        }));
 
     camera.viewfinder.visibleGameSize = Vector2(cols * cellSize, rows * cellSize);
     camera.viewfinder.position = Vector2(cols * cellSize / 2, rows * cellSize / 2);

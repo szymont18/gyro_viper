@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:gyro_viper/core/player/components/SnakeHead.dart';
 import 'dart:developer' as developer;
 import 'SnakeSegment.dart';
 
@@ -26,16 +27,23 @@ class Snake extends PositionComponent with HasGameReference {
 
   void _createBody(Vector2 startPosition) {
     _segments.clear();
+    // Create head
+    final head = SnakeHead(
+        position: startPosition,
+        size: Vector2.all(cellSize),
+        color: Colors.greenAccent,
+        snake: this);
 
-    for (int i = 0; i < initialLength; i++) {
+    _segments.add(head);
+
+    // Create rest of the body
+    for (int i = 1; i < initialLength; i++) {
       final segmentPosition = Vector2(startPosition.x - i * cellSize, startPosition.y);
-      final isHead = i == 0;
 
       final segment = SnakeSegment(
         position: segmentPosition,
         size: Vector2.all(cellSize),
-        isHead: isHead,
-        color: isHead ? Colors.greenAccent : Colors.green,
+        color: Colors.green,
       );
 
       _segments.add(segment);
