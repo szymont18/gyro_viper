@@ -1,61 +1,55 @@
-import 'dart:async';
-import 'package:flutter/cupertino.dart';
-import '../player/IPlayer.dart';
-import '../utils/GridPoint.dart';
+import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
+import 'WallBlock.dart';
 
-class Board {
+class Board extends PositionComponent {
   final int cols;
   final int rows;
+  final double cellSize;
 
-  // Game tick interval in milliseconds
-  final int tickMs;
+  Board({
+    required this.cols,
+    required this.rows,
+    required this.cellSize,
+  });
 
-  // Players on the board
-  final List<IPlayer> players = [];
+  @override
+  Future<void> onLoad() async {
+    super.onLoad();
 
-  Timer? _gameTimer;
-  bool running = false;
-
-  Board({required this.cols, required this.rows, this.tickMs = 200});
-
-  /// Add a player to the board
-  void addPlayer(IPlayer p) => players.add(p);
-
-  /// Start the game loop
-  void start() {
-    stop();
-    running = true;
-    _gameTimer = Timer.periodic(Duration(milliseconds: tickMs), (_) {
-      tick();
-    });
+    final bg = RectangleComponent(
+      position: Vector2.zero(),
+      size: Vector2(cols * cellSize, rows * cellSize),
+      paint: Paint()..color = Colors.white,
+    );
+    add(bg);
+    _createWalls();
   }
 
-  /// Stop the game loop
-  void stop() {
-    _gameTimer?.cancel();
-    _gameTimer = null;
-    running = false;
-  }
+  void _createWalls() {
+    final double width = cols * cellSize;
+    final double height = rows * cellSize;
 
-  /// Advance all players one tick
-  void tick() {
-    for (final p in players) {
-      try {
-        p.update();
-      } catch (e) {
-        // Keep tick robust even if a player is not implemented
-        debugPrint('Player update error: $e');
-      }
+    for (int x = 0; x < cols; x++) {
+      add(WallBlock(
+        position: Vector2(x * cellSize, 0),
+        size: Vector2(cellSize, cellSize),
+      ));
+      add(WallBlock(
+        position: Vector2(x * cellSize, height - cellSize),
+        size: Vector2(cellSize, cellSize),
+      ));
     }
-  }
 
-  bool isOutOfBounds(GridPoint p) {
-    return p.x < 0 || p.x >= cols || p.y < 0 || p.y >= rows;
-  }
-
-  /// Return whether all players are dead
-  bool allPlayersDead() {
-    if (players.isEmpty) return true;
-    return players.every((p) => !p.alive);
+    for (int y = 0; y < rows; y++) {
+      add(WallBlock(
+        position: Vector2(0, y * cellSize),
+        size: Vector2(cellSize, cellSize),
+      ));
+      add(WallBlock(
+        position: Vector2(width - cellSize, y * cellSize),
+        size: Vector2(cellSize, cellSize),
+      ));
+    }
   }
 }
