@@ -5,7 +5,7 @@ import 'SnakeSegment.dart';
 
 
 class Snake extends PositionComponent {
-  static const double movementTickTimerBoundary = 0.3;
+  static const double movementTickTimerBoundary = 0.2;
 
   final List<SnakeSegment> _segments = [];
   final int initialLength;
@@ -15,6 +15,7 @@ class Snake extends PositionComponent {
 
   Vector2 direction = Vector2(1, 0);
   bool isAlive = true;
+  SnakeSegment? segmentToAdd;
 
   Snake({
     required Vector2 startPosition,
@@ -37,7 +38,8 @@ class Snake extends PositionComponent {
 
     // Create rest of the body
     for (int i = 1; i < initialLength; i++) {
-      final segmentPosition = Vector2(startPosition.x - i * cellSize, startPosition.y);
+      final segmentPosition = Vector2(
+          startPosition.x - i * cellSize, startPosition.y);
 
       final segment = SnakeSegment(
         position: segmentPosition,
@@ -88,10 +90,32 @@ class Snake extends PositionComponent {
     super.update(dt);
     _movementTickTimer += dt;
 
-    if (_movementTickTimer > movementTickTimerBoundary){
+    if (_movementTickTimer > movementTickTimerBoundary) {
       _movementTickTimer = 0;
       move();
+      actualizeBody();
     }
+  }
+
+  void actualizeBody()
+  {
+    print("ActualizeBody");
+    if (segmentToAdd != null) {
+      add(segmentToAdd!);
+      _segments.add(segmentToAdd!);
+      segmentToAdd = null;
+    }
+  }
+
+  void grow()
+  {
+    print("Grow");
+    var newSegment = SnakeSegment(
+        position: _segments.last.position,
+        size: Vector2.all(cellSize),
+        color: Colors.green);
+
+    segmentToAdd = newSegment;
   }
 
   Vector2 get headPosition => _segments.first.position;

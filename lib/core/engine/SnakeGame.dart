@@ -1,5 +1,6 @@
 import 'package:flame/camera.dart';
 import 'package:flame/game.dart';
+import 'package:gyro_viper/core/engine/predicates/FruitGrower.dart';
 import 'package:gyro_viper/core/engine/predicates/PlayersAlive.dart';
 import 'package:gyro_viper/core/player/LocalPlayer.dart';
 import '../board/Board.dart';
@@ -9,9 +10,10 @@ class SnakeGame extends FlameGame with HasCollisionDetection {
   late Board board;
   late Snake snake;
 
-  final int cols = 70;
-  final int rows = 50;
+  final int cols = 20;
+  final int rows = 20;
   final double cellSize = 32.0;
+  final double timeToRespawnNewFruit = 2.0;
 
   SnakeGame(CameraComponent camera): super(camera: camera);
 
@@ -41,6 +43,7 @@ class SnakeGame extends FlameGame with HasCollisionDetection {
           pauseEngine();
           overlays.add('GameOverMenu');
         }));
+    add(FruitGrover(period: timeToRespawnNewFruit, world: world, rows: rows, cols: cols, cellSize: cellSize));
 
     // Camera follow snake's head
     camera.follow(snake.head);
