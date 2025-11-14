@@ -1,16 +1,15 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:gyro_viper/core/player/components/SnakeHead.dart';
-import 'dart:developer' as developer;
 import 'SnakeSegment.dart';
 
 
-class Snake extends PositionComponent with HasGameReference {
+class Snake extends PositionComponent {
   static const double movementTickTimerBoundary = 0.3;
 
   final List<SnakeSegment> _segments = [];
   final int initialLength;
-  final double cellSize; // TODO: It should not be defined here
+  final double cellSize;
 
   double _movementTickTimer = 0;
 
@@ -59,7 +58,6 @@ class Snake extends PositionComponent with HasGameReference {
 
   void move() {
     if (!isAlive) return;
-
     final head = _segments.first;
     final newHeadPosition = head.position + direction * cellSize;
     var previousPosition = head.position.clone();
@@ -97,4 +95,5 @@ class Snake extends PositionComponent with HasGameReference {
   }
 
   Vector2 get headPosition => _segments.first.position;
+  SnakeSegment get head => _segments.first;
 }

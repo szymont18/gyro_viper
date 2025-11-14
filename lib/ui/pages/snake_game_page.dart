@@ -1,3 +1,4 @@
+import 'package:flame/camera.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class SnakeGamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GameWidget(
-        game: SnakeGame(),
+        game: SnakeGame(CameraComponent.withFixedResolution(width: 800, height: 450)),
         overlayBuilderMap: {
           'GameOverMenu': (_, SnakeGame game) => GameOverPage(
             onRestart: () => game.resumeEngine(),

@@ -1,3 +1,4 @@
+import 'package:flame/camera.dart';
 import 'package:flame/game.dart';
 import 'package:gyro_viper/core/engine/predicates/PlayersAlive.dart';
 import 'package:gyro_viper/core/player/LocalPlayer.dart';
@@ -8,29 +9,30 @@ class SnakeGame extends FlameGame with HasCollisionDetection {
   late Board board;
   late Snake snake;
 
-  final int cols = 20;
-  final int rows = 15;
+  final int cols = 70;
+  final int rows = 50;
   final double cellSize = 32.0;
+
+  SnakeGame(CameraComponent camera): super(camera: camera);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    debugMode = true;
+    // debugMode = true;
 
     board = Board(cols: cols, rows: rows, cellSize: cellSize);
-    add(board);
+    world.add(board);
 
     final startPosition = Vector2(
-      (cols ~/ 2) * cellSize,
-      (rows ~/ 2) * cellSize,
-    );
+      cellSize * 10, cellSize * 5);
 
     snake = Snake(
       startPosition: startPosition,
       cellSize: cellSize,
-      initialLength: 6,
+      initialLength: 4,
     );
-    add(snake);
+
+    world.add(snake);
     final localPlayer = LocalPlayer(snake: snake);
 
     add(PlayerAlive(
@@ -40,7 +42,7 @@ class SnakeGame extends FlameGame with HasCollisionDetection {
           overlays.add('GameOverMenu');
         }));
 
-    camera.viewfinder.visibleGameSize = Vector2(cols * cellSize, rows * cellSize);
-    camera.viewfinder.position = Vector2(cols * cellSize / 2, rows * cellSize / 2);
+    // Camera follow snake's head
+    camera.follow(snake.head);
   }
 }

@@ -1,5 +1,3 @@
-
-
 import 'package:flame/components.dart';
 import 'package:gyro_viper/core/player/components/SnakeSegment.dart';
 

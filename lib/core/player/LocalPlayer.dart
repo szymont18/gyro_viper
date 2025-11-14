@@ -6,7 +6,7 @@ import 'package:sensors_plus/sensors_plus.dart';
 
 
 class LocalPlayer implements IPlayer {
-  static const double tiltThreshold = 2.0;
+  static const double tiltThreshold = 2.5;
   static const int tiltHoldMilliseconds = 150;
 
   final Snake _snake;
